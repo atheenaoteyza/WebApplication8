@@ -10,7 +10,7 @@ namespace WebApplication8.Models
             //Fluent API configuring ISBN as PK
             entity.HasKey(b => b.ISBN);
             entity.Property(b => b.Title).IsRequired().HasMaxLength(200);
-            entity.Property(b => b.Price).IsRequired();
+            // entity.Property(b => b.Price).IsRequired();
 
             entity.HasData(
                 new Book { ISBN = 00001, Title = "The Hobbit", Price = 5.00 },
