@@ -41,7 +41,7 @@ namespace WebApplication8.Migrations
 
                     b.HasKey("AuthorId");
 
-                    b.ToTable("Authors");
+                    b.ToTable("Authors", (string)null);
                 });
 
             modelBuilder.Entity("WebApplication8.Models.Book", b =>
@@ -65,7 +65,7 @@ namespace WebApplication8.Migrations
 
                     b.HasKey("ISBN");
 
-                    b.ToTable("Books");
+                    b.ToTable("Books", (string)null);
 
                     b.HasData(
                         new
