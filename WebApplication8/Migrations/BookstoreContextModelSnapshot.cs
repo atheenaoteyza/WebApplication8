@@ -22,6 +22,33 @@ namespace WebApplication8.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("AuthorBook", b =>
+                {
+                    b.Property<int>("AuthorsAuthorId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("BooksISBN")
+                        .HasColumnType("int");
+
+                    b.HasKey("AuthorsAuthorId", "BooksISBN");
+
+                    b.HasIndex("BooksISBN");
+
+                    b.ToTable("AuthorBook");
+
+                    b.HasData(
+                        new
+                        {
+                            AuthorsAuthorId = 1,
+                            BooksISBN = 1
+                        },
+                        new
+                        {
+                            AuthorsAuthorId = 2,
+                            BooksISBN = 2
+                        });
+                });
+
             modelBuilder.Entity("WebApplication8.Models.Author", b =>
                 {
                     b.Property<int>("AuthorId")
@@ -41,7 +68,21 @@ namespace WebApplication8.Migrations
 
                     b.HasKey("AuthorId");
 
-                    b.ToTable("Authors", (string)null);
+                    b.ToTable("Authors");
+
+                    b.HasData(
+                        new
+                        {
+                            AuthorId = 1,
+                            FirstName = "John Ronald Reuel",
+                            LastName = "Tolkien"
+                        },
+                        new
+                        {
+                            AuthorId = 2,
+                            FirstName = "Augusten",
+                            LastName = "Burroughs"
+                        });
                 });
 
             modelBuilder.Entity("WebApplication8.Models.Book", b =>
@@ -55,7 +96,7 @@ namespace WebApplication8.Migrations
                     b.Property<double?>("Discount")
                         .HasColumnType("float");
 
-                    b.Property<double>("Price")
+                    b.Property<double?>("Price")
                         .HasColumnType("float");
 
                     b.Property<string>("Title")
@@ -65,7 +106,7 @@ namespace WebApplication8.Migrations
 
                     b.HasKey("ISBN");
 
-                    b.ToTable("Books", (string)null);
+                    b.ToTable("Books");
 
                     b.HasData(
                         new
@@ -81,6 +122,21 @@ namespace WebApplication8.Migrations
                             Price = 3.0,
                             Title = "The Running Scissors"
                         });
+                });
+
+            modelBuilder.Entity("AuthorBook", b =>
+                {
+                    b.HasOne("WebApplication8.Models.Author", null)
+                        .WithMany()
+                        .HasForeignKey("AuthorsAuthorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("WebApplication8.Models.Book", null)
+                        .WithMany()
+                        .HasForeignKey("BooksISBN")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

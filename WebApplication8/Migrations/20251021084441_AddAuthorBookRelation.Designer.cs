@@ -12,8 +12,8 @@ using WebApplication8.Models;
 namespace WebApplication8.Migrations
 {
     [DbContext(typeof(BookstoreContext))]
-    [Migration("20251015074826_MakeDiscountNullable")]
-    partial class MakeDiscountNullable
+    [Migration("20251021084441_AddAuthorBookRelation")]
+    partial class AddAuthorBookRelation
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -25,6 +25,21 @@ namespace WebApplication8.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("AuthorBook", b =>
+                {
+                    b.Property<int>("AuthorsAuthorId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("BooksISBN")
+                        .HasColumnType("int");
+
+                    b.HasKey("AuthorsAuthorId", "BooksISBN");
+
+                    b.HasIndex("BooksISBN");
+
+                    b.ToTable("AuthorBook");
+                });
+
             modelBuilder.Entity("WebApplication8.Models.Author", b =>
                 {
                     b.Property<int>("AuthorId")
@@ -35,8 +50,7 @@ namespace WebApplication8.Migrations
 
                     b.Property<string>("FirstName")
                         .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("LastName")
                         .IsRequired()
@@ -58,7 +72,7 @@ namespace WebApplication8.Migrations
                     b.Property<double?>("Discount")
                         .HasColumnType("float");
 
-                    b.Property<double>("Price")
+                    b.Property<double?>("Price")
                         .HasColumnType("float");
 
                     b.Property<string>("Title")
@@ -84,6 +98,21 @@ namespace WebApplication8.Migrations
                             Price = 3.0,
                             Title = "The Running Scissors"
                         });
+                });
+
+            modelBuilder.Entity("AuthorBook", b =>
+                {
+                    b.HasOne("WebApplication8.Models.Author", null)
+                        .WithMany()
+                        .HasForeignKey("AuthorsAuthorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("WebApplication8.Models.Book", null)
+                        .WithMany()
+                        .HasForeignKey("BooksISBN")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

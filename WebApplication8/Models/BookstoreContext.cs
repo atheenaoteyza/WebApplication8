@@ -12,6 +12,16 @@ namespace WebApplication8.Models
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfiguration(new BookConfig());
+            modelBuilder.ApplyConfiguration(new AuthorConfig());
+
+            modelBuilder.Entity<Book>()
+            .HasMany(b => b.Authors)
+            .WithMany(a => a.Books)
+            .UsingEntity(ab => ab.HasData(
+                new { AuthorsAuthorId = 0001, BooksISBN = 0001 },
+                new { AuthorsAuthorId = 0002, BooksISBN = 0002 }
+
+            ));
         }
     }
 }
