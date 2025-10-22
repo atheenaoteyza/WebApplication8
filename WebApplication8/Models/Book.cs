@@ -4,6 +4,8 @@ namespace WebApplication8.Models
 {
     public class Book
     {
+        public Book() => Authors = new HashSet<Author>();
+
         [Key]
         public int ISBN { get; set; }
         [Required]
@@ -12,6 +14,8 @@ namespace WebApplication8.Models
 
         public double? Price { get; set; }
         public double? Discount { get; set; }
+
+        public ICollection<Author> Authors { get; set; }
 
     }
 }
