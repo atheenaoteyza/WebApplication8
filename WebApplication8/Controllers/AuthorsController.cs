@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using WebApplication8.DTOs;
 using WebApplication8.Models;
 
 namespace WebApplication8.Controllers
@@ -19,6 +20,19 @@ namespace WebApplication8.Controllers
         {
             var authors = _context.Authors
                 .Include(a => a.Books)
+                .Select(a => new AuthorDTO
+                {
+                    AuthorId = a.AuthorId,
+                    FirstName = a.FirstName,
+                    LastName = a.LastName,
+                    Books = a.Books.Select(ab => new BookDTO
+                    {
+                        ISBN = ab.ISBN,
+                        Title = ab.Title,
+                        Price = ab.Price,
+                        Discount = ab.Discount
+                    }).ToList()
+                })
                 .ToList();
 
             foreach (var author in authors)
