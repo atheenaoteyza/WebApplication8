@@ -1,6 +1,7 @@
 using WebApplication8.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.SqlServer;
+using WebApplication8.Service;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -9,6 +10,9 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 
 builder.Services.AddDbContext<BookstoreContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("BookstoreContext")));
+
+// ✅ Register your service here
+builder.Services.AddScoped<BookstoreService>();
 
 var app = builder.Build();
 
