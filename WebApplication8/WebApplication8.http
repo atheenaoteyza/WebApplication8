@@ -1,0 +1,13 @@
+### 🧾 Get all authors + their books
+GET http://localhost:5086/authors/test-authors
+Accept: application/json
+
+###
+
+### ➕ Add a book to an author
+POST http://localhost:5086/authors/2/add-book/1
+Content-Type: application/json
+
+{
+  "notes": "Attaching book with ISBN 2 to author 1"
+}
