@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using WebApplication8.DTOs;
 using WebApplication8.Service;
 
 namespace WebApplication8.Controllers
@@ -33,5 +34,45 @@ namespace WebApplication8.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+
+
+        // ✍️ Add new author
+        [HttpPost]
+        public async Task<IActionResult> AddAuthor([FromBody] AuthorDTO dto)
+        {
+            try
+            {
+                await _bookstoreService.AddAuthorAsync(dto); // 👈 await the async method
+                return Ok("Author added successfully.");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpGet("/books")]
+        public async Task<IActionResult> GetAllBooks()
+        {
+            var books = await _bookstoreService.GetAllBooksAsync();
+            return Ok(books);
+        }
+
+
+        [HttpPost("/add-book")]
+        public async Task<IActionResult> AddNewBook([FromBody] BookDTO dto)
+        {
+            try
+            {
+                await _bookstoreService.AddNewBookAsync(dto);
+                return Ok("Book added successfully");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
     }
 }

@@ -5,9 +5,32 @@ Accept: application/json
 ###
 
 ### ➕ Add a book to an author
-POST http://localhost:5086/authors/2/add-book/1
+POST http://localhost:5086/authors/1002/add-book/978
 Content-Type: application/json
 
 {
   "notes": "Attaching book with ISBN 2 to author 1"
 }
+
+### 🆕 Add a brand new book
+POST http://localhost:5086/add-book
+Content-Type: application/json
+
+{
+  "title": "The Silmarillion",
+  "price": 25.99,
+  "discount": 0.1
+}
+
+### ✍️ Add a new author
+POST http://localhost:5086/authors
+Content-Type: application/json
+
+{
+  "firstName": "John",
+  "lastName": "Green"
+}
+
+### 🧾 Get all books + author
+GET http://localhost:5086/books
+Accept: application/json
