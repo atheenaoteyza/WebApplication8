@@ -49,5 +49,57 @@ namespace WebApplication8.Service
             await _context.SaveChangesAsync();
 
         }
+
+
+        public async Task<List<BookDTO>> GetAllBooksAsync()
+        {
+            return await _context.Books.Include(b => b.Authors)
+            .Select(b => new BookDTO
+            {
+                ISBN = b.ISBN,
+                Title = b.Title,
+                Price = b.Price,
+                Discount = b.Discount,
+                Authors = b.Authors.Select(ba => new AuthorDTO
+                {
+                    AuthorId = ba.AuthorId,
+                    FirstName = ba.FirstName,
+                    LastName = ba.LastName,
+                }).ToList()
+            }).ToListAsync();
+        }
+
+        public async Task AddNewBookAsync(BookDTO dto)
+        {
+
+            var book = new Book
+            {
+                Title = dto.Title,
+                Price = dto.Price,
+                Discount = dto.Discount,
+            };
+
+            _context.Books.Add(book);
+            await _context.SaveChangesAsync();
+        }
+
+
+
+        public async Task AddAuthorAsync(AuthorDTO dto)
+        {
+
+            var author = new Author
+            {
+                FirstName = dto.FirstName,
+                LastName = dto.LastName
+            };
+
+            _context.Authors.Add(author);
+            await _context.SaveChangesAsync();
+
+
+        }
+
+
     }
 }
