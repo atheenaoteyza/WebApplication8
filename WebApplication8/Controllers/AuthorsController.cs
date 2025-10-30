@@ -74,5 +74,33 @@ namespace WebApplication8.Controllers
             }
         }
 
+        [HttpPut("/update-book")]
+        public async Task<IActionResult> UpdateBook([FromBody] BookDTO dto)
+        {
+            try
+            {
+                await _bookstoreService.UpdateBookAsync(dto);
+                return Ok("Book updated successfully");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpDelete("/delete-book/{isbn}")]
+        public async Task<IActionResult> DeleteBookById(int isbn)
+        {
+            try
+            {
+                await _bookstoreService.DeleteBookAsync(isbn);
+                return Ok("Book successfully removed");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
     }
 }
