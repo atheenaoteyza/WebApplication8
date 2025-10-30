@@ -51,6 +51,22 @@ namespace WebApplication8.Service
         }
 
 
+        public async Task AddAuthorAsync(AuthorDTO dto)
+        {
+
+            var author = new Author
+            {
+                FirstName = dto.FirstName,
+                LastName = dto.LastName
+            };
+
+            _context.Authors.Add(author);
+            await _context.SaveChangesAsync();
+
+
+        }
+
+
         public async Task<List<BookDTO>> GetAllBooksAsync()
         {
             return await _context.Books.Include(b => b.Authors)
@@ -83,21 +99,15 @@ namespace WebApplication8.Service
             await _context.SaveChangesAsync();
         }
 
-
-
-        public async Task AddAuthorAsync(AuthorDTO dto)
+        public async Task UpdateBookAsync(BookDTO dto)
         {
+            var book = await _context.Books.FindAsync(dto.ISBN) ?? throw new Exception("Book not found");
 
-            var author = new Author
-            {
-                FirstName = dto.FirstName,
-                LastName = dto.LastName
-            };
+            book.Title = dto.Title;
+            book.Price = dto.Price;
+            book.Discount = dto.Discount;
 
-            _context.Authors.Add(author);
             await _context.SaveChangesAsync();
-
-
         }
 
 

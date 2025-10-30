@@ -74,5 +74,19 @@ namespace WebApplication8.Controllers
             }
         }
 
+        [HttpPut("/update-book")]
+        public async Task<IActionResult> UpdateBook([FromBody] BookDTO dto)
+        {
+            try
+            {
+                await _bookstoreService.UpdateBookAsync(dto);
+                return Ok("Book updated successfully");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
     }
 }
