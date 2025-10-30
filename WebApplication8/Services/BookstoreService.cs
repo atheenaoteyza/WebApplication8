@@ -110,6 +110,11 @@ namespace WebApplication8.Service
             await _context.SaveChangesAsync();
         }
 
-
+        public async Task DeleteBookAsync(int isbn)
+        {
+            var book = await _context.Books.FindAsync(isbn) ?? throw new Exception("Book not found");
+            _context.Books.Remove(book);
+            await _context.SaveChangesAsync();
+        }
     }
 }

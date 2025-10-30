@@ -88,5 +88,19 @@ namespace WebApplication8.Controllers
             }
         }
 
+        [HttpDelete("/delete-book/{isbn}")]
+        public async Task<IActionResult> DeleteBookById(int isbn)
+        {
+            try
+            {
+                await _bookstoreService.DeleteBookAsync(isbn);
+                return Ok("Book successfully removed");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
     }
 }
