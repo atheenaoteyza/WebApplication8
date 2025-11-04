@@ -18,21 +18,18 @@ namespace WebApplication8.Controllers
         public async Task<IActionResult> GetAllAuthors()
         {
             var authors = await _bookstoreService.GetAllAuthorsAsync();
+
             return Ok(authors);
         }
 
         [HttpPost("{authorId}/add-book/{isbn}")]
         public async Task<IActionResult> AddBookToAuthor(int authorId, int isbn)
         {
-            try
-            {
-                await _bookstoreService.AddBookToAuthorAsync(authorId, isbn);
-                return Ok();
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
+
+            await _bookstoreService.AddBookToAuthorAsync(authorId, isbn);
+            return Ok();
+
+
         }
 
 

@@ -5,11 +5,11 @@ Accept: application/json
 ###
 
 ### ➕ Add a book to an author
-POST http://localhost:5086/authors/1002/add-book/1002
+POST http://localhost:5086/authors/3/add-book/2001
 Content-Type: application/json
 
 {
-  "notes": "Attaching book with ISBN 2 to author 1"
+  "notes": "Attaching book with ISBN 2 to author 2"
 }
 
 ### 🆕 Add a brand new book
