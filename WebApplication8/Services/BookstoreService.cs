@@ -33,21 +33,25 @@ namespace WebApplication8.Service
                 .ToListAsync();
         }
 
+
+
         public async Task AddBookToAuthorAsync(int authorId, int isbn)
         {
-            var author = await _context.Authors.FindAsync(authorId);
+            var author = await _context.Authors
+                .Include(a => a.Books) // ✅ include books to check duplicates
+                .FirstOrDefaultAsync(a => a.AuthorId == authorId);
+
             var book = await _context.Books.FindAsync(isbn);
 
             if (book == null || author == null)
-                throw new Exception("Author or book not found");
+                throw new KeyNotFoundException("Author or book not found");
 
-            //prevent duplicates
+            // ✅ Prevent duplicates at the app level
             if (author.Books.Any(a => a.ISBN == isbn))
-                throw new Exception("Book already assigned");
+                throw new InvalidOperationException("Book already assigned to this author");
 
             author.Books.Add(book);
             await _context.SaveChangesAsync();
-
         }
 
 
@@ -66,7 +70,7 @@ namespace WebApplication8.Service
 
         }
 
-
+        // Read Books
         public async Task<List<BookDTO>> GetAllBooksAsync()
         {
             return await _context.Books.Include(b => b.Authors)
@@ -84,7 +88,7 @@ namespace WebApplication8.Service
                 }).ToList()
             }).ToListAsync();
         }
-
+        // Create a Book
         public async Task AddNewBookAsync(BookDTO dto)
         {
 
@@ -98,7 +102,7 @@ namespace WebApplication8.Service
             _context.Books.Add(book);
             await _context.SaveChangesAsync();
         }
-
+        // Update a Book
         public async Task UpdateBookAsync(BookDTO dto)
         {
             var book = await _context.Books.FindAsync(dto.ISBN) ?? throw new Exception("Book not found");
@@ -110,6 +114,7 @@ namespace WebApplication8.Service
             await _context.SaveChangesAsync();
         }
 
+        //Delete a Book
         public async Task DeleteBookAsync(int isbn)
         {
             var book = await _context.Books.FindAsync(isbn) ?? throw new Exception("Book not found");

@@ -1,26 +1,31 @@
 using WebApplication8.Models;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.SqlServer;
 using WebApplication8.Service;
-
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+
+// Add services to the container
 builder.Services.AddControllersWithViews();
 
-builder.Services.AddDbContext<BookstoreContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("BookstoreContext")));
+// Register DbContext
+builder.Services.AddDbContext<BookstoreContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("BookstoreContext")));
 
-// ✅ Register your service here
+// Register your custom service
 builder.Services.AddScoped<BookstoreService>();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+// ✅ Global Error Handler (replace built-in exception pages)
+app.UseMiddleware<ErrorHandlingMiddleware>();
+
+// Configure the HTTP request pipeline
 if (!app.Environment.IsDevelopment())
 {
-    app.UseExceptionHandler("/Home/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+    // ❌ Remove this since we're using our own middleware
+    // app.UseExceptionHandler("/Home/Error");
+
     app.UseHsts();
 }
 
